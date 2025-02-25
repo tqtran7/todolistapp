@@ -1,0 +1,11 @@
+
+.heading {
+    background-color: black;
+    height: 200px;
+    width: 100%;
+}
+
+.heading-text {
+    font-weight: 900;
+    font-size: 40px;
+}

@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'nooro-blue': '#4EA8DE',
+        'nooro-purple': '#5E60CE',
+        'nooro-gray': '#808080',
       },
     },
   },

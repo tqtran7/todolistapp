@@ -1,0 +1,23 @@
+
+.task-item {
+    cursor: pointer;
+    background-color: #262626;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.task-message {
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    color: #F2F2F2;
+}
+
+.task-message-completed {
+    text-decoration: line-through;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808080;
+}
