@@ -32,7 +32,7 @@ interface TaskPageProps {
   taskId?: string;
 }
 
-const UpsertTaskPage: React.FC<TaskPageProps> = ({ taskId }) => {
+const UpsertTaskPage = ({ taskId }: TaskPageProps) => {
 
   const router = useRouter();
   const [taskColor, setTaskColor] = useState<string>(colors[0]);
