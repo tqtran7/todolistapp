@@ -118,7 +118,7 @@ const UpsertTaskPage: React.FC<TaskPageProps> = ({ taskId }) => {
           </div>
           {taskId ? 
             <Button text="Save" icon={"/images/check.svg"} onClick={update} disabled={!isTitleValid} /> : 
-            <Button text="Add Task" icon={"/images/plus-circle.svg"} onClick={add} disabled={!isTitleValid} />
+            <Button text="Add Task" icon={"/images/circle-plus.svg"} onClick={add} disabled={!isTitleValid} />
           }
         </div>
       </div>

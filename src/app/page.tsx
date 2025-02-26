@@ -64,6 +64,8 @@ export default function Home() {
     }
   };
 
+  const completedCount = completed === 0 ? '0' : `${completed.toString()} of ${tasks.length}`;
+
   return (
     <div className='w-full'>
       <Heading />
@@ -73,13 +75,13 @@ export default function Home() {
           <a href='/task'>
             <Button
               text='Create Task'
-              icon={'/images/plus-circle.svg'}
+              icon={'/images/circle-plus.svg'}
               onClick={() => ''}
             />
           </a>
           <div className='flex flex-row justify-between w-full mt-[66px]'>
             <Counter label={'Tasks'} count={tasks.length.toString()} className='text-nooro-blue'/>
-            <Counter label={'Completed'} count={`${completed.toString()} of ${tasks.length}`} className='text-nooro-purple'/>
+            <Counter label={'Completed'} count={completedCount} className='text-nooro-purple'/>
           </div>
           {tasks.length === 0 ? (
             <div className='flex flex-col items-center justify-center'>
@@ -110,7 +112,7 @@ export default function Home() {
             />
             <Button
               text='Confirm'
-              color='#FF2D55'
+              color='#1E6F9F'
               onClick={onTaskDeleted}
             />
           </div>

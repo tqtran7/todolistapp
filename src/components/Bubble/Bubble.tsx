@@ -8,7 +8,7 @@ interface ButtonProps {
 
 const Button : React.FC<ButtonProps> = ({ text }) => {
   return (
-    <span className='bubble'>
+    <span className='flex bubble h-[19px] justify-between items-start'>
       <span className='bubble-text'>{text}</span>
     </span>
   );
