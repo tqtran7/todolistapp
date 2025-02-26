@@ -4,6 +4,7 @@ import { updateTask } from '@/apis/task';
 
 import "./TaskItem.css";
 import Image from 'next/image';
+import { TaskProps } from '@/interfaces/Task';
 
 interface TaskItemProps {
   task: TaskProps;
