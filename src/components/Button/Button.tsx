@@ -14,7 +14,7 @@ interface ButtonProps {
     onClick: MouseEventHandler<HTMLButtonElement>;
   }
 
-const Button : React.FC<ButtonProps> = ({ text, icon, color = '#1E6F9F', width = 500, disabled, onClick}) => {
+const Button : React.FC<ButtonProps> = ({ text, icon, color = '#1E6F9F', disabled, onClick}) => {
   return (
     <button 
         disabled={disabled}

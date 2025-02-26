@@ -8,25 +8,25 @@ import Heading from '@/components/Heading/Heading';
 import Counter from '@/components/Counter/Counter';
 import { deleteTask, fetchTasks } from '@/apis/task';
 import Modal from '@/components/Modal/Modal';
+import Link from 'next/link';
+import { TaskProps } from '@/interfaces/Task';
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
-  const [completed, setCompleted] = useState<Number>(0);
+  const [completed, setCompleted] = useState<number>(0);
 
   // TODO: use a loader so user has a better experience
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<TaskProps>();
 
   // fetch all tasks on mount
   useEffect(() => {
     const fetchData = async () => {
-      try { 
-        const results = await fetchTasks();
-        console.log(results);
-        setTasks(results); 
-      } 
-      finally { setLoading(false); }
+      const results = await fetchTasks();
+      console.log(results);
+      setTasks(results); 
+      // finally { setLoading(false); }
     };
 
     fetchData();
@@ -72,13 +72,13 @@ export default function Home() {
       
       <div className='flex flex-col items-center justify-center'>
         <div className='w-[736px]' style={{ transform: 'translateY(-26px)' }}>
-          <a href='/task'>
+          <Link href='/task'>
             <Button
               text='Create Task'
               icon={'/images/circle-plus.svg'}
               onClick={() => ''}
             />
-          </a>
+          </Link>
           <div className='flex flex-row justify-between w-full mt-[66px]'>
             <Counter label={'Tasks'} count={tasks.length.toString()} className='text-nooro-blue'/>
             <Counter label={'Completed'} count={completedCount} className='text-nooro-purple'/>
@@ -88,7 +88,7 @@ export default function Home() {
               <hr className='w-full border-t border-gray-600 my-4 mb-[62px]' />
               <Image src={'/images/Clipboard.png'} alt='clipboard' width={56} height={56}/>
               <span className='text-[#808080]'>
-                <p className='font-bold mt-[16px]'>You don't have any tasks registered yet.</p>
+                <p className='font-bold mt-[16px]'>You don&apos;t have any tasks registered yet.</p>
                 <p className='font-light mt-[22px]'>Create tasks and organize your to-do items.</p>
               </span>
             </div>

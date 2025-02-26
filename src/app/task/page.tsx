@@ -9,6 +9,7 @@ import Image from "next/image";
 
 import "./task.css";
 import { addTask, fetchTask, updateTask } from "@/apis/task";
+import Link from "next/link";
 
 // TODO: colors should probably come from a database
 const colors = [
@@ -86,14 +87,14 @@ const UpsertTaskPage: React.FC<TaskPageProps> = ({ taskId }) => {
       <Heading />
       <div className="flex flex-col items-center justify-center">
         <div className="w-[736px] mt-[91px]">
-          <a href="/">
+          <Link href="/">
             <Image
               src={"/images/arrow-long-left.svg"}
               alt="Back"
               width={24}
               height={24}
             />
-          </a>
+          </Link>
           <div className="mt-[53px]"></div>
           <div className="flex flex-col">
             <label className="task-label text-nooro-blue">Title</label>

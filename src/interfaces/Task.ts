@@ -1,4 +1,5 @@
-interface TaskProps {
+
+export interface TaskProps {
     id: string;
     color: string;
     message: string;

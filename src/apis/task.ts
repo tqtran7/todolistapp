@@ -1,8 +1,9 @@
 
 // TODO: use react query to cache requests
-// TODO: host should come from a config file
 
-const host = "http://localhost:4000";
+import { TaskProps } from "@/interfaces/Task";
+
+const host = process.env.API_HOST ?? 'http://localhost:4000';
 
 export const fetchTasks = async (): Promise<TaskProps[]> => {
   try {
@@ -17,7 +18,7 @@ export const fetchTasks = async (): Promise<TaskProps[]> => {
 
 export const fetchTask = async (id: string): Promise<TaskProps | null> => {
   try {
-    const response = await fetch(`http://localhost:4000/tasks/${id}`);
+    const response = await fetch(`${host}/tasks/${id}`);
     if (!response.ok) throw new Error(`Failed to fetch task ${id}`);
     return await response.json();
   } catch (error) {
@@ -26,7 +27,7 @@ export const fetchTask = async (id: string): Promise<TaskProps | null> => {
   }
 };
 
-export const addTask = async (data: any): Promise<TaskProps | null> => {
+export const addTask = async (data: Partial<TaskProps>): Promise<TaskProps | null> => {
   try {
     const { color, message } = data;
     const response = await fetch(`${host}/tasks`, {
@@ -42,7 +43,7 @@ export const addTask = async (data: any): Promise<TaskProps | null> => {
   }
 };
 
-export const updateTask = async (id: string, data: any): Promise<TaskProps | null> => {
+export const updateTask = async (id: string, data: Partial<TaskProps>): Promise<TaskProps | null> => {
   try {
     const response = await fetch(`${host}/tasks/${id}`, {
         method: "PATCH",
@@ -59,7 +60,7 @@ export const updateTask = async (id: string, data: any): Promise<TaskProps | nul
 
 export const deleteTask = async (id: string): Promise<TaskProps | null> => {
     try {
-      const response = await fetch(`http://localhost:4000/tasks/${id}`, {
+      const response = await fetch(`${host}/tasks/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
