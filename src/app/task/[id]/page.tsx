@@ -1,12 +1,12 @@
 'use client';
 
 import { useParams  } from 'next/navigation';
-import UpsertTaskPage from "../page";
+import TaskPage from "@/components/TaskEditor/TaskEditor";
 
 const EditTaskPage : React.FC = () => {
   const { id } = useParams();
   const taskId: string | undefined = id as string | undefined;  
-  return <UpsertTaskPage taskId={taskId}/>;
+  return <TaskPage taskId={taskId}/>;
 };
 
 export default EditTaskPage;
