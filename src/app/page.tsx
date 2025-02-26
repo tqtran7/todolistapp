@@ -1,37 +1,44 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import TaskItem from "@/components/TaskItem/TaskItem";
-import Button from "@/components/Button/Button";
-import Heading from "@/components/Heading/Heading";
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import TaskItem from '@/components/TaskItem/TaskItem';
+import Button from '@/components/Button/Button';
+import Heading from '@/components/Heading/Heading';
+import Counter from '@/components/Counter/Counter';
+import { deleteTask, fetchTasks } from '@/apis/task';
+import Modal from '@/components/Modal/Modal';
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [completed, setCompleted] = useState<Number>(0);
+
+  // TODO: use a loader so user has a better experience
   const [loading, setLoading] = useState<boolean>(true);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<TaskProps>();
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/tasks");
-      if (!response.ok) throw new Error("Failed to fetch data");
-      const result: TaskProps[] = await response.json();
-      setTasks(result);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // fetch all tasks on mount
   useEffect(() => {
+    const fetchData = async () => {
+      try { 
+        const results = await fetchTasks();
+        console.log(results);
+        setTasks(results); 
+      } 
+      finally { setLoading(false); }
+    };
+
     fetchData();
   }, []);
 
+  // update completed counter whenever tasks changes
   useEffect(() => {
     const completedTasks = tasks.filter(task => task.completed);
     setCompleted(completedTasks.length);
   }, [tasks]);
 
+  // update the tasks once it has been updated
   const onTaskUpdated = (updatedTask: TaskProps) => {
     setTasks(prevTasks => 
       prevTasks.map(task =>
@@ -40,45 +47,74 @@ export default function Home() {
     );
   };
 
-  const onTaskDeleted = () => {
-    fetchData();
+  // save the user selected task
+  const onTaskSelected = (task: TaskProps) => {
+    setModalIsOpen(true);
+    setSelectedTask(task);
+  };
+
+  // delete the task user confirmed
+  const onTaskDeleted = async () => {
+    setModalIsOpen(false);
+    if (selectedTask) {
+      const response = await deleteTask(selectedTask.id);
+      if (response) {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTask.id));
+      }
+    }
   };
 
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <Heading />
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-[736px]" style={{ transform: "translateY(-26px)" }}>
-          <a href="/task">
+      
+      <div className='flex flex-col items-center justify-center'>
+        <div className='w-[736px]' style={{ transform: 'translateY(-26px)' }}>
+          <a href='/task'>
             <Button
-              text="Create Task"
-              icon={"/images/plus-circle.svg"}
+              text='Create Task'
+              icon={'/images/plus-circle.svg'}
               onClick={() => ''}
             />
           </a>
-          <div className="flex flex-row justify-between w-full mt-[66px]">
-            <p className="text-nooro-blue">Tasks {tasks.length}</p>
-            <p className="text-nooro-purple">
-              Completed {completed.toString()} of {tasks.length}
-            </p>
+          <div className='flex flex-row justify-between w-full mt-[66px]'>
+            <Counter label={'Tasks'} count={tasks.length.toString()} className='text-nooro-blue'/>
+            <Counter label={'Completed'} count={`${completed.toString()} of ${tasks.length}`} className='text-nooro-purple'/>
           </div>
           {tasks.length === 0 ? (
-            <div>
-              <hr className="w-full border-t border-gray-600 my-4" />
-              <pre className="text-[#808080]">
-                You don't have any tasks registered yet. Create tasks and
-                organize your to-do items.
-              </pre>
+            <div className='flex flex-col items-center justify-center'>
+              <hr className='w-full border-t border-gray-600 my-4 mb-[62px]' />
+              <Image src={'/images/Clipboard.png'} alt='clipboard' width={56} height={56}/>
+              <span className='text-[#808080]'>
+                <p className='font-bold mt-[16px]'>You don't have any tasks registered yet.</p>
+                <p className='font-light mt-[22px]'>Create tasks and organize your to-do items.</p>
+              </span>
             </div>
           ) : (
-            <ul className="w-full mt-[24px]">
+            <ul className='w-full mt-[24px]'>
               {tasks.map((task) => (
-                <TaskItem key={task.id} task={task} onDeleted={onTaskDeleted} onUpdated={onTaskUpdated} />
+                <TaskItem key={task.id} task={task} onDeleted={onTaskSelected} onUpdated={onTaskUpdated} />
               ))}
             </ul>
           )}
         </div>
       </div>
+      
+      <Modal isOpen={modalIsOpen}>
+          <p>Are you sure you want to delete this task?</p>
+          <div className='flex flex-row gap-6 mt-6'>
+            <Button
+              text='Cancel'
+              color='#626262'
+              onClick={() => setModalIsOpen(false)}
+            />
+            <Button
+              text='Confirm'
+              color='#FF2D55'
+              onClick={onTaskDeleted}
+            />
+          </div>
+      </Modal>
     </div>
   );
 }

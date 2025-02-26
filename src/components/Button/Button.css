@@ -9,6 +9,11 @@
     text-align: center;
 }
 
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .button-text {
     font-weight: 700;
     font-size: 14px;

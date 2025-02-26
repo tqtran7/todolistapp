@@ -6,8 +6,13 @@
   border: 1px solid #333333;
   border-radius: 8px;
   padding: 16px;
-  margin: 12px;
+  margin: 12px 0;
 
   background: #262626;
   color: #F2F2F2;
+}
+
+.task-label {
+  font-weight: 700;
+  font-size: 14px;
 }

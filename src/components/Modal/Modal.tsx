@@ -1,7 +1,6 @@
 'use client';
 
-import { ReactNode, SetStateAction, useState } from "react";
-import EditTaskPage from '../app/task/[id]/page';
+import { ReactNode } from "react";
 
 interface ModalProps {
     isOpen: boolean;
@@ -13,8 +12,10 @@ const ModalDialog : React.FC<ModalProps> = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-[#303030] p-6 rounded-lg shadow-lg w-full max-w-md">
       {children}
+    </div>
     </div>
   );
 };

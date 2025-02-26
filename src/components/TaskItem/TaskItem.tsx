@@ -1,20 +1,18 @@
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import Image from "next/image";
+import { useRouter } from 'next/navigation';
 
 import "./TaskItem.css";
+import { deleteTask, updateTask } from '@/apis/task';
 
 interface TaskItemProps {
   task: TaskProps;
   onUpdated: (task: TaskProps) => void;
-  onDeleted: () => void;
+  onDeleted: (task: TaskProps) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onDeleted, onUpdated }) => {
   
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const taskId = searchParams.get('id');
   const { id, color, message, completed } = task;
 
   const onClick = () => {
@@ -24,56 +22,26 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDeleted, onUpdated }) => {
   const onToggleComplete = async (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    try {
-      
-      const response = await fetch(`http://localhost:4000/tasks/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ color, message, completed: !completed })
-      });
-
-      if (!response.ok) throw new Error("Failed to submit data");
-      
-      // update successful
-      const updatedTask = { ...task, completed: !completed };
-      onUpdated(updatedTask);
-
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    const response = await updateTask(id, { color, message, completed: !completed });
+    if (response) {
+      onUpdated({ ...task, completed: !completed });
+    } 
   };
 
   const onDeleteTask = async (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    try {
-      const response = await fetch(`http://localhost:4000/tasks/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!response.ok) throw new Error("Failed to submit data");
-      const result = await response.json();
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      onDeleted();
-    }
+    onDeleted({ ...task });
   };
 
   return (
-    <li className="flex flex-row w-full justify-between task-item" onClick={onClick}>
+    <li className="flex flex-row w-full justify-between items-start task-item" onClick={onClick}>
       {/* <p>{id} </p> */}
       {/* <ColorCircle color={color} /> */}
       <button onClick={onToggleComplete}>
         {task.completed ? (
           <div className="text-nooro-purple">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-6"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
               <path
                 fillRule="evenodd"
                 d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
@@ -83,14 +51,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDeleted, onUpdated }) => {
           </div>
         ) : (
           <div className="text-nooro-blue">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="size-6"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-6">
               <circle cx="12" cy="12" r="9" />
             </svg>
           </div>

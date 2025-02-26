@@ -8,7 +8,7 @@ const Heading: React.FC = () => {
     <div className="flex flex-row items-center justify-center heading">
       <Image src={'/images/rocket.svg'} alt='' width={22} height={36}/> 
       <span className='flex flex-row ml-[12px] heading-text'>
-        <p className='text-nooro-blue'>Todo</p>
+        <p className='text-nooro-blue'>Todo</p>&nbsp;
         <p className='text-nooro-purple'>App</p>
       </span>
     </div>
